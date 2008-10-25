@@ -1,0 +1,101 @@
+<html>
+
+
+<head>
+
+</head>
+
+<script language="javascript" src="./jquery-1.2.6.js"></script>
+<script language="javascript" src="./formJSON.js"></script>
+
+<script language="javascript">
+
+
+
+$(document).ready( function() {
+
+	var testForm = document.getElementById("testForm");
+
+	var formJSON = new FormJSON(true);
+	
+	var objectJSONString = "{\"text2\": \"test1\", \"text2\": \"test2\", \"textArea1\": \"text area test 1\", \"check1\": [\"check1\", \"check2\"]}";
+	var objectJSON = eval("(" + objectJSONString + ")");
+	
+	formJSON.deserialize(testForm, objectJSON);
+	alert(formJSON.getLoggerOutput());
+	formJSON.getLogger().clearLog();
+	
+	var serializedFormString = formJSON.serializeToString(testForm);
+	alert(formJSON.getLoggerOutput());
+	formJSON.getLogger().clearLog();
+	alert(serializedFormString);
+	
+	var serializedForm = formJSON.serialize(testForm);
+	alert(formJSON.getLoggerOutput());
+	formJSON.getLogger().clearLog();
+	alert(serializedForm);
+
+})
+
+</script>
+
+<body>
+
+	<form id="testForm">
+		<table>
+			<tr>
+				<td>testInput1:</td>
+				<td><input type="text" id="text1"/></td>
+			</tr>
+			
+			<tr>
+				<td>testInput2:</td>
+				<td><input type="text" id="text2"/></td>
+			</tr>
+			
+			<tr>
+				<td valign="top">text area 1:</td>
+				<td><textarea id="textArea1"></textarea></td>
+			</tr>
+			
+			<tr>
+				<td>checkbox 1:</td>
+				<td><input type="checkbox" id="check1" value="check1"/></td>
+			</tr>
+			
+			<tr>
+				<td>checkbox 2:</td>
+				<td><input type="checkbox" id="check1" value="check2"/></td>
+			</tr>
+			
+			<tr>
+				<td>checkbox 3:</td>
+				<td><input type="checkbox" id="check1" value="check3"/></td>
+			</tr>
+			
+			<tr>
+				<td>combo:</td>
+				<td>
+					<select id="comboTest">
+						<option value=""></option>
+						<option value="comboValue1">value 1</option>
+						<option value="comboValue2">value 2</option>
+						<option value="comboValue3">value 3</option>
+					</select>
+				</td>
+			</tr>
+			
+			<tr>
+				<td>radio:</td>
+				<td><input type="radio" id="radioTest" name="radioTest" value="yes" checked="checked"/>yes&nbsp;<input type="radio" id="radioTest" name="radioTest" value="no"/>no</td>
+			</tr>
+				
+		</table>
+		
+		<input type="hidden" id="hiddenTest" value="hiddenValue"/>
+	</form>
+		
+</body>
+
+
+</html>
