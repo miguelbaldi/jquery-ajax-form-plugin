@@ -7,6 +7,7 @@
 
 <script language="javascript" src="./jquery-1.2.6.js"></script>
 <script language="javascript" src="./formJSON.js"></script>
+<script language="javascript" src="./tableJSON.js"></script>
 
 <script language="javascript">
 
@@ -14,11 +15,12 @@
 
 $(document).ready( function() {
 
+/*
 	var testForm = document.getElementById("testForm");
 
 	var formJSON = new FormJSON(true);
 	
-	var objectJSONString = "{\"text2\": \"test1\", \"text2\": \"test2\", \"textArea1\": \"text area test 1\", \"check1\": [\"check1\", \"check2\"]}";
+	var objectJSONString = "{\"text3\": \"test1\", \"text2\": \"test2\", \"textArea1\": \"text area test 1\", \"check1\": [\"check1\", \"check2\"], \"comboTest\": \"comboValue2\"}";
 	var objectJSON = eval("(" + objectJSONString + ")");
 	
 	formJSON.deserialize(testForm, objectJSON);
@@ -34,8 +36,38 @@ $(document).ready( function() {
 	alert(formJSON.getLoggerOutput());
 	formJSON.getLogger().clearLog();
 	alert(serializedForm);
+*/	
+	var tableTest = document.getElementById("tableTest");
+		
+	var objectArrayString = "[ " +
+		"{\"collumn1\": \"column11Value\", \"collumn2\": \"column12Value\", \"collumn3\": \"column13Value\", \"collumn4\": \"column14Value\"}, " + 
+		"{\"collumn1\": \"column21Value\", \"collumn2\": \"column22Value\", \"collumn3\": \"column23Value\", \"collumn4\": \"column24Value\"}, " + 
+		"{\"collumn1\": \"column31Value\", \"collumn2\": \"column32Value\", \"collumn3\": \"column33Value\", \"collumn4\": \"column34Value\"}, " + 
+		"{\"collumn1\": \"column41Value\", \"collumn2\": \"column42Value\", \"collumn3\": \"column43Value\", \"collumn4\": \"column44Value\"}, " + 
+		"{\"collumn1\": \"column51Value\", \"collumn2\": \"column52Value\", \"collumn3\": \"column53Value\", \"collumn4\": \"column54Value\"}, " + 
+		"{\"collumn1\": \"column61Value\", \"collumn2\": \"column62Value\", \"collumn3\": \"column63Value\", \"collumn4\": \"column64Value\"}" + 
+		" ]";
+	
+	var objectArray = eval("(" + objectArrayString + ")");
+	
+	var tableJSON = new TableJSON(tableTest, objectArray, null, true);
+	tableJSON.setTableRowOnClick(onClickRow);
+	tableJSON.setTableCollumnOnClick(onClickCollumn);
+	tableJSON.build();
+	
+	alert(tableJSON.getLoggerOutput());
+	
 
 })
+
+function onClickRow(selectObject, event) {
+	alert("row clicked [selectObject.collumn1: " + selectObject.collumn1 + "]" + "[selectObject.collumn2: " + selectObject.collumn2 + "]" + "[selectObject.collumn3: " + selectObject.collumn3 + "]" + "[selectObject.collumn4: " + selectObject.collumn4 + "]");
+}
+
+function onClickCollumn(selectObject, event) {
+	alert("collumn clicked");
+}
+
 
 </script>
 
@@ -94,6 +126,20 @@ $(document).ready( function() {
 		
 		<input type="hidden" id="hiddenTest" value="hiddenValue"/>
 	</form>
+	
+	<table id ="tableTest">
+		<thead>
+			<tr>
+				<th id="collumn1">Collumn 1</th>
+				<th id="collumn2">Collumn 2</th>
+				<th id="collumn3">Collumn 3</th>
+				<th id="collumn4">Collumn 4</th>
+			</tr>
+		</thead>
+		
+		<tbody></tbody>
+		
+	</table>
 		
 </body>
 

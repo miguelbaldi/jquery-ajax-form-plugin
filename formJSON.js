@@ -1,5 +1,6 @@
 
 /**
+ *
  * HTML Form JSON serialization library.
  *
  * @author <a href="mailto:ricardofragacamelo@gmail.com">Ricardo Fraga Camelo</a>
@@ -31,8 +32,8 @@ function FormJSON(debug) {
 	var deserializeTextArea = defaultDeserializeTextArea;
 	var deserializeInputTypeSelect = defaultDeserializeInputTypeSelect;
 	var deserializeOption = defaultDeserializeOption;
-
 	
+
 	/* public interface */
 
 	this.serializeToString = function(form) {
@@ -133,7 +134,7 @@ function FormJSON(debug) {
 	this.setDeserializeOption = function(_deserializeInputTypeText) {
 		deserializeInputTypeSelect = _deserializeInputTypeSelect;
 	}
-	
+
 
 	this.getLogger = function() {
 		return logger;
@@ -222,71 +223,71 @@ function FormJSON(debug) {
 	
 	function defaultSerializeInputTypeText(formJSON, node, jsonBuilder) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("serialize input type text [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("serialize input type text [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
-			jsonBuilder.addProperty(node.id, node.value);
+			jsonBuilder.addProperty(FormJSONUtil.resolveNodeName(node), node.value);
 		}
 	}
 	
 	function defaultSerializeInputTypeHidden(formJSON, node, jsonBuilder) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("serialize input type hidden [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("serialize input type hidden [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
-			jsonBuilder.addProperty(node.id, node.value);
+			jsonBuilder.addProperty(FormJSONUtil.resolveNodeName(node), node.value);
 		}
 	}
 	
 	function defaultSerializeInputTypePassword(formJSON, node, jsonBuilder) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("serialize input type password [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("serialize input type password [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
-			jsonBuilder.addProperty(node.id, node.value);
+			jsonBuilder.addProperty(FormJSONUtil.resolveNodeName(node), node.value);
 		}
 	}
 	
 	function defaultSerializeInputTypeRadio(formJSON, node, jsonBuilder) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("serialize input radio [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("serialize input radio [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
 			if (node.checked == true) {
-				jsonBuilder.addProperty(node.id, node.value);
+				jsonBuilder.addProperty(FormJSONUtil.resolveNodeName(node), node.value);
 			}
 		}
 	}
 	
 	function defaultSerializeInputTypeCheckBox(formJSON, node, jsonBuilder) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("serialize input check box [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("serialize input check box [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
 			if (node.checked == true) {
-				jsonBuilder.addProperty(node.id, node.value);
+				jsonBuilder.addProperty(FormJSONUtil.resolveNodeName(node), node.value);
 			}
 		}
 	}
 	
 	function defaultSerializeTextArea(formJSON, node, jsonBuilder) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("serialize text area [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("serialize text area [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
-			jsonBuilder.addProperty(node.id, node.value);
+			jsonBuilder.addProperty(FormJSONUtil.resolveNodeName(node), node.value);
 		}
 	}
 	
 	function defaultSerializeInputTypeSelect(formJSON, node, jsonBuilder) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("serialize select [" + node.id + "]");
+			formJSON.getLogger().log("serialize select [" + FormJSONUtil.resolveNodeName(node)+ "]");
 		}
 	}
 		
@@ -294,14 +295,14 @@ function FormJSON(debug) {
 		var selectOptionParent = null;
 		
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("serialize option [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("serialize option [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
 			if (node.selected == true) { 
 				selectOptionParent = FormJSONUtil.findSelectOptionParent(node);
 				if (selectOptionParent != null) {
-					jsonBuilder.addProperty(selectOptionParent.id, node.value);
+					jsonBuilder.addProperty(FormJSONUtil.resolveNodeName(selectOptionParent), node.value);
 				}
 			}
 		}
@@ -312,11 +313,11 @@ function FormJSON(debug) {
 	
 	function defaultDeserializeInputTypeText(formJSON, node, jsonObject) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("deserialize input type text [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("deserialize input type text [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
-		if (jsonObject[node.id]) {
-			node.value = jsonObject[node.id];
+		if (jsonObject[FormJSONUtil.resolveNodeName(node)]) {
+			node.value = jsonObject[FormJSONUtil.resolveNodeName(node)];
 		} else {
 			node.value = "";
 		}
@@ -324,11 +325,11 @@ function FormJSON(debug) {
 	
 	function defaultDeserializeInputTypeHidden(formJSON, node, jsonObject) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("deserialize input type hidden [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("deserialize input type hidden [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
-		if (jsonObject[node.id]) {
-			node.value = jsonObject[node.id];
+		if (jsonObject[FormJSONUtil.resolveNodeName(node)]) {
+			node.value = jsonObject[FormJSONUtil.resolveNodeName(node)];
 		} else {
 			node.value = "";
 		}
@@ -336,11 +337,11 @@ function FormJSON(debug) {
 	
 	function defaultDeserializeInputTypePassword(formJSON, node, jsonObject) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("deserialize input type password [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("deserialize input type password [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
-		if (jsonObject[node.id]) {
-			node.value = jsonObject[node.id];
+		if (jsonObject[FormJSONUtil.resolveNodeName(node)]) {
+			node.value = jsonObject[FormJSONUtil.resolveNodeName(node)];
 		} else {
 			node.value = "";
 		}
@@ -348,12 +349,12 @@ function FormJSON(debug) {
 	
 	function defaultDeserializeInputTypeRadio(formJSON, node, jsonObject) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("deserialize input radio [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("deserialize input radio [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
-			if (jsonObject[node.id]) {
-				if (FormJSONUtil.isValueInArrayOrEqual(node.value, jsonObject[node.id])) {
+			if (jsonObject[FormJSONUtil.resolveNodeName(node)]) {
+				if (FormJSONUtil.isValueInArrayOrEqual(node.value, jsonObject[FormJSONUtil.resolveNodeName(node)])) {
 					node.checked = true;
 				} else {
 					//node.checked = false;
@@ -366,12 +367,12 @@ function FormJSON(debug) {
 	
 	function defaultDeserializeInputTypeCheckBox(formJSON, node, jsonObject) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("deserialize input check box [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("deserialize input check box [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
 		if (node.value) {
-			if (jsonObject[node.id]) {
-				if (FormJSONUtil.isValueInArrayOrEqual(node.value, jsonObject[node.id])) {
+			if (jsonObject[FormJSONUtil.resolveNodeName(node)]) {
+				if (FormJSONUtil.isValueInArrayOrEqual(node.value, jsonObject[FormJSONUtil.resolveNodeName(node)])) {
 					node.checked = true;
 				} else {
 					node.checked = false;
@@ -384,11 +385,11 @@ function FormJSON(debug) {
 	
 	function defaultDeserializeTextArea(formJSON, node, jsonObject) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("deserialize text area [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("deserialize text area [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 		
-		if (jsonObject[node.id]) {
-			node.value = jsonObject[node.id];
+		if (jsonObject[FormJSONUtil.resolveNodeName(node)]) {
+			node.value = jsonObject[FormJSONUtil.resolveNodeName(node)];
 		} else {
 			node.value = "";
 		}
@@ -396,13 +397,42 @@ function FormJSON(debug) {
 	
 	function defaultDeserializeInputTypeSelect(formJSON, node, jsonObject) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("deserialize select [" + node.id + "]");
+			formJSON.getLogger().log("deserialize select [" + FormJSONUtil.resolveNodeName(node) + "]");
+		}
+		
+		var optionSelectChildren = FormJSONUtil.findOptionSelectChildren(node);
+		var optionFound = false;
+		
+		if (jsonObject[FormJSONUtil.resolveNodeName(node)]) {
+			for (var optionItem in optionSelectChildren) {
+				var option = optionSelectChildren[optionItem];
+				var equalValues = (option.value == jsonObject[FormJSONUtil.resolveNodeName(node)]); 
+				 
+				if (equalValues) {
+					option.selected = true;
+					optionFound = true;
+					break;
+				}
+			}
+		} 
+		
+		if (!optionFound) {
+			for (var optionItem in optionSelectChildren) {
+				var option = optionSelectChildren[optionItem];
+				var nullValue = FormJSONUtil.isNullValue(option.value) 
+			
+				if (nullValue) {
+					option.selected = true;
+					break;
+				}
+			}
+		
 		}
 	}
 		
 	function defaultDeserializeOption(formJSON, node, jsonObject) {
 		if (formJSON.getLogger().isDebugEnabled()) {
-			formJSON.getLogger().log("deserialize option [" + node.id + ", " + node.value + "]");
+			formJSON.getLogger().log("deserialize option [" + FormJSONUtil.resolveNodeName(node) + ", " + node.value + "]");
 		}
 	}
 	
@@ -538,28 +568,31 @@ var FormJSONUtil = new function() {
 		return null;
 	}
 	
-	/*
 	this.findOptionSelectChildren = function(node) {
 		var optionSelectChildren = new Array();
 		
-		findOptionSelectChildrenTraverseNodes()
+		findOptionSelectChildrenTraverseNodes(node, optionSelectChildren);
+		
+		return optionSelectChildren;
 	}
 	
 	function findOptionSelectChildrenTraverseNodes(node, optionSelectChildren) {
-		var childNodes = root.childNodes;
+		var childNodes = node.childNodes;
 		
 		for (var childNode in childNodes) {
-			var node = childNodes[childNode];
+			var candidateOption = childNodes[childNode];
 			
-			deserializeVisitNode(formJSON, node, jsonBuilder);
+			findOptionSelectChildrenVisitNode(candidateOption, optionSelectChildren);
 						
-			deserializeTraverseNodes(formJSON, node, jsonBuilder);
+			findOptionSelectChildrenTraverseNodes(candidateOption, optionSelectChildren);
 		}
 	}
 	
 	function findOptionSelectChildrenVisitNode(node, optionSelectChildren) {
-
-	}*/
+		if (node.nodeName == "OPTION") {
+			optionSelectChildren.push(node);
+		}
+	}
 	
 	this.isValueInArrayOrEqual = function(value1, value2) {
 		if (value1) {
@@ -577,6 +610,30 @@ var FormJSONUtil = new function() {
 		}
 		
 		return false;	
+	}
+	
+	this.isNullValue = function(value) {
+		if (value) {
+			if (value == "") {
+				return true;		
+			} else {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	this.resolveNodeName = function(node) {
+		var nodeName = null;
+		
+		if (node.id) {
+			nodeName = node.id;
+		} else if (node.name) {
+			nodeName = node.name;
+		}
+		
+		return nodeName;
 	}
 
 }
